@@ -3,12 +3,12 @@ Dark Store Project - Gymnasium Environment
 Step 3: Create the grid world for PPO training
 """
 
-import gymnasium as gym
-from gymnasium import spaces
-import numpy as np
-import json
-from collections import deque
-from pathlib import Path
+import gymnasium as gym #Creates RL environment.
+from gymnasium import spaces #Action Space and Observation Space
+import numpy as np #For Mathematical operations
+import json #For Data Storage 
+from collections import deque #For Breadth-First Search (BFS)
+from pathlib import Path #For Path Manipulation
 
 class DarkStoreEnv(gym.Env):
     metadata = {'render_modes': ['human', 'rgb_array'], 'render_fps': 4}
@@ -41,7 +41,7 @@ class DarkStoreEnv(gym.Env):
             self.product_positions[int(prod_id)] = (info['row'], info['col'])
 
         self.all_product_ids = list(self.product_positions.keys())
-        self._bfs_dist = self._precompute_bfs()
+        self._bfs_dist = self._precompute_bfs() #BFS Precomputation to find the shortest path between any two points
 
         self._shelf_pick_spots = {}
         for pid, shelf in self.product_positions.items():
@@ -53,20 +53,20 @@ class DarkStoreEnv(gym.Env):
                     spots.append(nb)
             self._shelf_pick_spots[pid] = spots
 
-        self.action_space = spaces.Discrete(4)
+        self.action_space = spaces.Discrete(4) # 0: up, 1: down, 2: left, 3: right
         obs_size = 2 + (self.max_items_per_order * 3) + 1
         self.observation_space = spaces.Box(
             low=0,
             high=max(self.grid_rows, self.grid_cols, max_steps),
             shape=(obs_size,),
-            dtype=np.float32
+            dtype=np.float32 # Data Type
         )
 
-        self.current_position = None
-        self.order_items = None
-        self.items_remaining = None
-        self.steps_taken = None
-        self.visited_positions = None
+        self.current_position = None # Current position of the robot
+        self.order_items = None # Items to be picked up 
+        self.items_remaining = None # Items remaining to be picked up 
+        self.steps_taken = None # Steps taken by the robot 
+        self.visited_positions = None # Positions visited by the robot 
         self._prev_min_dist = None
 
     def _precompute_bfs(self):
@@ -86,6 +86,11 @@ class DarkStoreEnv(gym.Env):
                         q.append(nb)
             dist[start] = d
         return dist
+    
+    #obs_size = 2 + (3*3) + 1 is the size of the observation space
+    #2 is for the current position of the robot 
+    #3*3 is for the 3 items to be picked up and each item has 3 values (x,y,z coordinates)
+    #1 is for the steps taken by the robot
 
     def _nav_dist_to_item(self, from_pos, item_id):
         spots = self._shelf_pick_spots.get(item_id, [])
@@ -142,30 +147,30 @@ class DarkStoreEnv(gym.Env):
 
         if (nr, nc) in self.walkable:
             self.current_position = [nr, nc]
-            reward -= 0.1
+            reward -= 0.1 # Penalty for moving Encourages shorter routes.
         else:
-            reward -= 0.3 # Wall penalty
+            reward -= 0.3 # Wall penalty to discourage hitting walls
 
         current_pos = tuple(self.current_position)
         curr_dist = self._min_dist_to_target()
-        reward += 0.8 * (self._prev_min_dist - curr_dist) # Shaping
+        reward += 0.8 * (self._prev_min_dist - curr_dist) # Reward for getting closer to the target
 
         for item_id in list(self.items_remaining):
-            if current_pos in self._shelf_pick_spots.get(item_id, []):
-                self.items_remaining.remove(item_id)
-                reward += 50
+            if current_pos in self._shelf_pick_spots.get(item_id, []): #Check if current position is the pick up spot for the item
+                self.items_remaining.remove(item_id) #Remove the item from the remaining items
+                reward += 50 # Reward for picking up an item
                 if len(self.items_remaining) == 0:
-                    reward += 25
+                    reward += 25 # Bonus for picking up the last item
 
         self._prev_min_dist = self._min_dist_to_target()
         self.visited_positions.add(current_pos)
 
         if not self.items_remaining and current_pos == self.depot_position:
-            reward += 100
-            terminated = True
+            reward += 100 # Bonus for returning to depot
+            terminated = True # Episode ends when all items are picked up and robot returns to depot
 
         if self.steps_taken >= self.max_steps:
-            truncated = True
+            truncated = True # Maximum steps reached
 
         return self._get_observation(), reward, terminated, truncated, self._get_info()
 

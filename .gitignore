@@ -15,3 +15,34 @@ __pycache__/
 
 # Keep the results but ignore the heavy model files
 dark_store_project/results/*.zip
+
+# Redundant evaluation, test, and debug scripts
+iomp-branch4/dark_store_project/code/5_baselines.py
+iomp-branch4/dark_store_project/code/6_evaluation.py
+iomp-branch4/dark_store_project/code/7_visualizations.py
+iomp-branch4/dark_store_project/code/8_Final_Evaluation_Stochastic.py
+iomp-branch4/dark_store_project/code/cat_log.py
+iomp-branch4/dark_store_project/code/debug_final.py
+iomp-branch4/dark_store_project/code/debug_viz.py
+iomp-branch4/dark_store_project/code/eval_ppo.py
+iomp-branch4/dark_store_project/code/final_check.py
+iomp-branch4/dark_store_project/code/generate_random_layout.py
+iomp-branch4/dark_store_project/code/greedy_baseline.py
+iomp-branch4/dark_store_project/code/honest_eval.py
+iomp-branch4/dark_store_project/code/layout_comparison.py
+iomp-branch4/dark_store_project/code/proper_eval.py
+iomp-branch4/dark_store_project/code/quick_test.py
+iomp-branch4/dark_store_project/code/read_eval.py
+iomp-branch4/dark_store_project/code/setup_random_train.py
+iomp-branch4/dark_store_project/code/tempCodeRunnerFile.py
+iomp-branch4/dark_store_project/code/test_env_detailed.py
+iomp-branch4/dark_store_project/code/test_shelves.py
+iomp-branch4/dark_store_project/code/tmp_layout_check.py
+iomp-branch4/dark_store_project/code/tmp_log_check.py
+iomp-branch4/dark_store_project/code/train_random_baseline.py
+iomp-branch4/dark_store_project/code/update_steps.py
+iomp-branch4/dark_store_project/fixed_eval_test.py
+iomp-branch4/dark_store_project/test_eval_fix.py
+
+# Temporary logs and text files
+iomp-branch4/dark_store_project/*.txt

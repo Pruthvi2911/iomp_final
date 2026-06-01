@@ -49,7 +49,7 @@ for i in range(n_eval):
     done = False
     ep_length = 0
     while not done:
-        action = env_opt.action_space.sample()
+        action = env_opt.action_space.sample() # Agent moves randomly Used as baseline.
         obs, reward, terminated, truncated, info = env_opt.step(action)
         ep_length += 1
         done = terminated or truncated
@@ -72,7 +72,7 @@ for i in range(n_eval):
     ep_length = 0
     while not done:
         # Use stochastic prediction (deterministic=False) to prevent gridlock loops
-        action, _ = model_opt.predict(obs, deterministic=False) 
+        action, _ = model_opt.predict(obs, deterministic=False) #uses trained PPO model to select action
         obs, reward, term, trunc, info = env_opt.step(action)
         ep_length += 1
         done = term or trunc
@@ -80,7 +80,7 @@ for i in range(n_eval):
     ppo_opt_lengths.append(ep_length)
     # SUCCESS CONDITION CHECK: Only check if items_remaining is 0. Ignore depot.
     items_remaining = info.get('items_remaining', 3)
-    ppo_opt_successes.append(1 if items_remaining == 0 else 0)
+    ppo_opt_successes.append(1 if items_remaining == 0 else 0) #In no-depot evaluation. Meaning All items picked. Return depot not required.
 
 # ==================================
 # 3. COMPILE & SAVE METRICS

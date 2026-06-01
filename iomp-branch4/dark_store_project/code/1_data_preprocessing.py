@@ -118,6 +118,7 @@ orders_grouped = relevant_orders.groupby('order_id')['product_id'].apply(list)
 
 print("  Analyzing co-purchase patterns...")
 pair_counter = Counter()
+#for pair in combinations(sorted(order_items),2):pair_counter[pair]+=1 is Affinity Calculation
 
 for order_items in orders_grouped:
     if len(order_items) >= 2:

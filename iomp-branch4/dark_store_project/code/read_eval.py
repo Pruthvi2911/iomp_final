@@ -1,4 +1,0 @@
-with open('eval_out.txt', 'r', encoding='utf-16') as f:
-    text = f.read()
-with open('eval_out_ok.txt', 'w', encoding='utf-8') as f:
-    f.write(text)

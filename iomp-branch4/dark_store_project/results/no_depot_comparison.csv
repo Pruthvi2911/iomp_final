@@ -1,3 +1,3 @@
 Method,Avg Steps,Avg Steps (Win),Success Rate (%)
-Random Walk + ILP Layout,248.545,230.6,7.5
-PPO (Stochastic) + ILP Layout,182.22,151.05109489051094,68.5
+Random Walk + ILP Layout,247.58,196.22222222222223,4.5
+PPO (Stochastic) + ILP Layout,177.855,148.38732394366198,71.0

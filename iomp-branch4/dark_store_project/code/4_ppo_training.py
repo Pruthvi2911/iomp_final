@@ -7,12 +7,12 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import BaseCallback
-from stable_baselines3.common.vec_env import DummyVecEnv
-import time
-import sys
-from pathlib import Path
+from stable_baselines3 import PPO #PPO Algorithm
+from stable_baselines3.common.callbacks import BaseCallback #Callback to track progress
+from stable_baselines3.common.vec_env import DummyVecEnv #Vectorized Environment to speed up training
+import time #Time tracking
+import sys #System specific parameters and functions
+from pathlib import Path #Path manipulation
 
 # Fix terminal encoding for Windows
 sys.stdout.reconfigure(encoding='utf-8')
@@ -43,11 +43,11 @@ except ImportError:
 DarkStoreEnv = gym_module.DarkStoreEnv
 
 # Training parameters
-TOTAL_TIMESTEPS = 500000  
-LEARNING_RATE = 3e-4
-N_STEPS = 2048 
-BATCH_SIZE = 64
-N_EPOCHS = 10
+TOTAL_TIMESTEPS = 500000  #Number of steps to train the agent
+LEARNING_RATE = 3e-4 #Learning rate 0.0003 controls update size
+N_STEPS = 2048 #Number of steps to train the agent
+BATCH_SIZE = 64 #Batch size 2^n 
+N_EPOCHS = 10 #Number of epochs Gradient update count.
 
 print("=" * 60)
 print("DARK STORE - PPO TRAINING")
@@ -115,8 +115,8 @@ model = PPO(
     n_epochs=N_EPOCHS,
     ent_coef=0.02, # Higher entropy encourages exploration in a maze
     verbose=0
-)
-
+) # PPO Creation with 4 parameters MlpPolicy, Env, Learning Rate, N_STEPS, BATCH_SIZE, N_EPOCHS, ent_coef
+# ppo creation Multi-Layer Perceptron.
 print("[3/5] Starting training (500k steps)...")
 callback = ProgressCallback(log_path=LOG_PATH)
 start_time = time.time()
