@@ -45,4 +45,6 @@ iomp-branch4/dark_store_project/fixed_eval_test.py
 iomp-branch4/dark_store_project/test_eval_fix.py
 
 # Temporary logs and text files
-iomp-branch4/dark_store_project/*.txt
+iomp-branch4/dark_store_project/*.txt
+iomp-branch4/dark_store_project/experiments/
+
